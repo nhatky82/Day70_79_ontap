@@ -4,12 +4,14 @@
   gather_facts: false
 
   tasks:
-    - name: Deploy Container (Auto stop, remove and run)
+    - name: Deploy Container
       community.docker.docker_container:
         name: devops-web
         image: devops-web:latest
         state: started
-        restart: yes
         recreate: yes
+        # Thêm các tùy chọn bảo mật để tránh lỗi AppArmor
+        privileged: yes
         published_ports:
           - "8091:80"
+        restart_policy: always
