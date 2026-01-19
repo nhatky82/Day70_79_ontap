@@ -1,6 +1,7 @@
 - name: Deploy web container using Docker
   hosts: web
   gather_facts: false 
+  become: yes  # Phải có dòng này để dùng quyền của cấu hình sudoers bạn đã làm
 
   tasks:
     - name: Remove old container if exists
@@ -12,4 +13,5 @@
         docker run -d
         -p 8091:80
         --name devops-web
+        --privileged           # Thêm flag này nếu bạn vẫn bị lỗi AppArmor
         devops-web:latest
