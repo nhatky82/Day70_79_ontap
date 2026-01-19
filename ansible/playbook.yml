@@ -1,5 +1,6 @@
 - name: Deploy web container (idempotent)
-  hosts: web
+  hosts: localhost
+  connection: local
   gather_facts: false
 
   tasks:
@@ -8,6 +9,7 @@
         name: devops-web
         image: devops-web:latest
         state: started
-        restart_policy: unless-stopped
-        ports:
+        restart_policy: always
+        recreate: true
+        published_ports:
           - "8091:80"
