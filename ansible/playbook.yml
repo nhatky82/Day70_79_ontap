@@ -1,10 +1,13 @@
-- name: Deploy web contrainer using Docker
+- name: Deploy web container (idempotent)
   hosts: web
-  gather_facts: false 
+  gather_facts: false
 
   tasks:
-    - name: Force remove old container if exists
-      shell: docker rm -f devops-web || true
-
-    - name: Run new container
-      shell: docker run -d -p 8091:80 --name devops-web devops-web:latest
+    - name: Ensure devops-web container is running
+      community.docker.docker_container:
+        name: devops-web
+        image: devops-web:latest
+        state: started
+        restart_policy: unless-stopped
+        ports:
+          - "8091:80"
