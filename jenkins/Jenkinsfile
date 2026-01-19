@@ -13,12 +13,9 @@ pipeline {
       }
     }
 
-    stage('Deploy') {
+    stage('Deploy with Ansible') {
       steps {
-        sh '''
-        docker rm devops-web || true
-        docker run -d -p 8091:80 --name devops-web devops-web:latest
-        '''
+        sh 'ansible-playbook -i ansible/inventory.ini ansible/playbook.yml'
       }
     }
   }
