@@ -1,5 +1,5 @@
 - name: Deploy web contrainer using Docker
-  host: web
+  hosts: web
   become: true
 
   tasks:
