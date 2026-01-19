@@ -2,12 +2,14 @@
 - name: Deploy web container using Docker
   hosts: web
   gather_facts: false
-  # XÓA DÒNG BECOME: YES ĐI
 
   tasks:
-    - name: Remove old container if exists
-      shell: "docker rm -f devops-web"
-      ignore_errors: yes
-
-    - name: Run new container
-      shell: "docker run -d -p 8091:80 --name devops-web devops-web:latest"
+    - name: Deploy Container (Auto stop, remove and run)
+      community.docker.docker_container:
+        name: devops-web
+        image: devops-web:latest
+        state: started
+        restart: yes
+        recreate: yes
+        published_ports:
+          - "8091:80"
