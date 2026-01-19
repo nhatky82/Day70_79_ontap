@@ -16,7 +16,6 @@ pipeline {
     stage('Deploy') {
       steps {
         sh '''
-        docker stop devops-web || true
         docker rm devops-web || true
         docker run -d -p 8091:80 --name devops-web devops-web:latest
         '''
