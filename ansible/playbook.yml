@@ -1,13 +1,6 @@
-- name: Deploy web container (idempotent)
-  hosts: localhost
-  connection: local
+- name: Deploy web container
+  hosts: web
   gather_facts: false
-
   tasks:
-    - name: Ensure devops-web container is running
-      community.docker.docker_container:
-        name: "devops-web-{{ ansible_date_time.epoch }}"
-        image: devops-web:latest
-        state: started
-        published_ports:
-          - "8091:80"
+    - shell: docker rm -f devops-web || true
+    - shell: docker run -d -p 8091:80 --name devops-web devops-web:latest
