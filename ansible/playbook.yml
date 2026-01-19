@@ -2,11 +2,17 @@
 - name: Deploy web container using Docker
   hosts: web
   gather_facts: false
+  become: yes              # Ansible sẽ tự gọi sudo dựa trên quyền bạn vừa check
+  become_method: sudo
 
   tasks:
     - name: Remove old container if exists
-      shell: "sudo docker rm -f devops-web"
+      shell: "docker rm -f devops-web"
       ignore_errors: yes
 
     - name: Run new container
-      shell: "sudo docker run -d -p 8091:80 --name devops-web devops-web:latest"
+      shell: >
+        docker run -d
+        -p 8091:80
+        --name devops-web
+        devops-web:latest
