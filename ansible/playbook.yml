@@ -1,15 +1,13 @@
-- name: Deploy web contrainer using Docker
+- name: Deploy web container using Docker
   hosts: web
   gather_facts: false 
 
   tasks:
-    - name: Stop old contrainer if exits
-      shell: docker stop devops-web || true
+    - name: Remove old container if exists
+      shell: "docker rm -f devops-web"
+      ignore_errors: yes
 
-    - name: Remove old contrainer if exits
-      shell: docker rm devops-web || true
-
-    - name: Run new contrainer
+    - name: Run new container
       shell: >
         docker run -d
         -p 8091:80
