@@ -2,32 +2,11 @@
 - name: Deploy web container using Docker
   hosts: web
   gather_facts: false
-  become: yes              # Sử dụng quyền sudo (đã cấu hình trong sudoers)
-  become_method: sudo      # Phương thức leo thang đặc quyền là sudo
 
   tasks:
     - name: Remove old container if exists
-      shell: "docker rm -f devops-web"
-      ignore_errors: yes   # Bỏ qua nếu container chưa tồn tại (lần đầu chạy)
-
-    - name: Run new container
-      shell: >
-        docker run -d
-        -p 8091:80
-        --name devops-web
-        --restart always
-        devops-web:latest
-
-    - name: Health check - Wait for container to be ready
-      uri:
-        url: http://localhost:8091
-        status_code: 200
-      register: result
-      until: result.status == 200
-      retries: 5           # Thử lại 5 lần
-      delay: 3             # Mỗi lần cách nhau 3 giây
+      shell: "sudo docker rm -f devops-web"
       ignore_errors: yes
 
-    - name: Remove dangling Docker images
-      shell: "docker image prune -f"
-      ignore_errors: yes   # Dọn dẹp các image cũ để tránh đầy ổ cứng
+    - name: Run new container
+      shell: "sudo docker run -d -p 8091:80 --name devops-web devops-web:latest"
