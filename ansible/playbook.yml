@@ -2,7 +2,8 @@
   hosts: web
   gather_facts: false 
   become: yes  # Phải có dòng này để dùng quyền của cấu hình sudoers bạn đã làm
-
+  become_method: sudo
+  
   tasks:
     - name: Remove old container if exists
       shell: "docker rm -f devops-web"
